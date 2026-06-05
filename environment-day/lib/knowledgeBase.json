@@ -1,0 +1,1125 @@
+{
+  "_meta": {
+    "version": "2.0.0",
+    "built": "2026-06-05",
+    "description": "Rule-based carbon cascade knowledge base. All emission factors and thresholds are research-backed.",
+    "sources": [
+      "IPCC AR6 Working Group I & III (2021-2023)",
+      "FAO GLEAM 2.0 - Global Livestock Environmental Assessment Model",
+      "EPA eGRID 2022 - US Emissions & Generation Resource Integrated Database",
+      "IEA Emissions Factors 2023",
+      "BirdLife International State of the World's Birds 2022",
+      "IUCN Red List 2023",
+      "Nature Climate Change - ocean acidification studies",
+      "UNEP Global Environment Outlook 6",
+      "WWF Living Planet Report 2022",
+      "IPCC Special Report on Ocean and Cryosphere 2019"
+    ]
+  },
+
+  "activities": [
+    {
+      "id": "personal_vehicle",
+      "label": "Car / Cab Ride",
+      "icon": "🚕",
+      "category": "transportation",
+      "unit": "km",
+      "inputMax": 500,
+      "inputStep": 5,
+      "color": "#d4a847",
+      "emissionFactors": {
+        "co2_kg_per_unit": 0.21,
+        "ch4_g_per_unit": 0.0025,
+        "n2o_g_per_unit": 0.0025,
+        "nox_g_per_unit": 0.25,
+        "pm25_g_per_unit": 0.03,
+        "black_carbon_g_per_unit": 0.002,
+        "co2e_kg_per_unit": 0.21
+      },
+      "notes": "Average petrol passenger car. CO2 from IPCC AR6 WGIII Table 10.1. NOx from Euro 6 average."
+    },
+    {
+      "id": "aviation",
+      "label": "Air Travel",
+      "icon": "✈️",
+      "category": "transportation",
+      "unit": "km",
+      "inputMax": 15000,
+      "inputStep": 100,
+      "color": "#ff9800",
+      "emissionFactors": {
+        "co2_kg_per_unit": 0.134,
+        "co2e_with_rfi_kg_per_unit": 0.255,
+        "nox_g_per_unit": 0.60,
+        "contrail_co2e_kg_per_unit": 0.121,
+        "ch4_g_per_unit": 0.0004,
+        "n2o_g_per_unit": 0.0009,
+        "co2e_kg_per_unit": 0.255
+      },
+      "notes": "Economy class, average haul. RFI of 1.9x applied per IPCC AR5 aviation chapter. Contrails add ~90% of CO2 warming at altitude. NOx at cruise altitude has 4-6x greater ozone impact than ground-level NOx."
+    },
+    {
+      "id": "electricity",
+      "label": "Electricity",
+      "icon": "⚡",
+      "category": "energy",
+      "unit": "kWh",
+      "inputMax": 1000,
+      "inputStep": 10,
+      "color": "#1de9b6",
+      "emissionFactors": {
+        "co2_kg_per_unit": 0.475,
+        "co2e_kg_per_unit": 0.475,
+        "nox_g_per_unit": 0.35,
+        "so2_g_per_unit": 0.30,
+        "pm25_g_per_unit": 0.04
+      },
+      "gridMixes": {
+        "global_avg": 0.475,
+        "india": 0.820,
+        "usa": 0.386,
+        "eu": 0.233,
+        "china": 0.581,
+        "coal_pure": 0.820,
+        "gas_pure": 0.490,
+        "solar_pure": 0.020,
+        "wind_pure": 0.011
+      },
+      "notes": "Global average grid mix (IEA 2023). Includes upstream methane leakage from gas plants."
+    },
+    {
+      "id": "beef",
+      "label": "Beef / Lamb",
+      "icon": "🥩",
+      "category": "food",
+      "unit": "kg",
+      "inputMax": 50,
+      "inputStep": 0.5,
+      "color": "#ff5252",
+      "emissionFactors": {
+        "co2e_kg_per_unit": 27.0,
+        "ch4_co2e_kg_per_unit": 18.0,
+        "n2o_co2e_kg_per_unit": 3.0,
+        "land_use_co2e_kg_per_unit": 6.0,
+        "water_litres_per_unit": 15400,
+        "land_m2_per_unit": 164
+      },
+      "notes": "FAO GLEAM 2.0 global average beef. CH4 from enteric fermentation (84x GWP20). Deforestation pressure included in land_use factor. Amazon beef: up to 85 kg CO2e/kg."
+    },
+    {
+      "id": "dairy",
+      "label": "Dairy (Milk)",
+      "icon": "🥛",
+      "category": "food",
+      "unit": "litres",
+      "inputMax": 50,
+      "inputStep": 0.5,
+      "color": "#90caf9",
+      "emissionFactors": {
+        "co2e_kg_per_unit": 1.2,
+        "ch4_co2e_kg_per_unit": 0.75,
+        "n2o_co2e_kg_per_unit": 0.18,
+        "water_litres_per_unit": 1020
+      },
+      "notes": "FAO GLEAM 2.0. Global average across all production systems. 1.2 kg CO2e/litre (corrected from older estimates)."
+    },
+    {
+      "id": "natural_gas",
+      "label": "Natural Gas",
+      "icon": "🔥",
+      "category": "energy",
+      "unit": "m³",
+      "inputMax": 500,
+      "inputStep": 5,
+      "color": "#ffa726",
+      "emissionFactors": {
+        "co2_kg_per_unit": 1.96,
+        "co2e_kg_per_unit": 2.10,
+        "ch4_leakage_co2e_kg_per_unit": 0.14,
+        "nox_g_per_unit": 0.50
+      },
+      "notes": "IPCC AR6 Table A.III.1. Includes 2% upstream methane leakage rate."
+    },
+    {
+      "id": "shopping",
+      "label": "Consumer Shopping",
+      "icon": "🛍️",
+      "category": "consumption",
+      "unit": "USD",
+      "inputMax": 2000,
+      "inputStep": 10,
+      "color": "#ab47bc",
+      "emissionFactors": {
+        "co2e_kg_per_unit": 0.43,
+        "breakdown": {
+          "electronics_per_usd": 0.89,
+          "apparel_per_usd": 0.63,
+          "general_per_usd": 0.43
+        }
+      },
+      "notes": "World Bank average carbon intensity of consumer goods. Electronics significantly higher due to rare earth mining and fabrication."
+    }
+  ],
+
+  "pollutantTypes": {
+    "CO2": {
+      "fullName": "Carbon Dioxide",
+      "gwp_100yr": 1,
+      "gwp_20yr": 1,
+      "atmospheric_lifetime_years": "300-1000",
+      "current_concentration_ppm": 421,
+      "preindustrial_ppm": 280,
+      "annual_increase_ppm": 2.4,
+      "primarySources": ["combustion", "deforestation", "cement"],
+      "cascadeTargets": ["atmospheric_co2_rise", "ocean_co2_absorption"]
+    },
+    "CH4": {
+      "fullName": "Methane",
+      "gwp_100yr": 28,
+      "gwp_20yr": 84,
+      "atmospheric_lifetime_years": 12,
+      "current_concentration_ppb": 1923,
+      "preindustrial_ppb": 722,
+      "primarySources": ["livestock", "landfill", "gas_leaks", "wetlands"],
+      "cascadeTargets": ["atmospheric_co2_rise", "ozone_tropospheric"]
+    },
+    "N2O": {
+      "fullName": "Nitrous Oxide",
+      "gwp_100yr": 265,
+      "gwp_20yr": 264,
+      "atmospheric_lifetime_years": 114,
+      "primarySources": ["agriculture", "fertilizers", "combustion"],
+      "cascadeTargets": ["ozone_stratospheric_depletion", "atmospheric_co2_rise"]
+    },
+    "NOx": {
+      "fullName": "Nitrogen Oxides (NO + NO2)",
+      "gwp_100yr": "indirect",
+      "primarySources": ["vehicle_engines", "aviation", "power_plants"],
+      "cascadeTargets": ["ozone_tropospheric", "ozone_stratospheric_depletion", "acid_deposition", "pm25_secondary"],
+      "altitudeNote": "NOx at cruise altitude (10-12km) has 4-6x stronger ozone-forming impact than ground-level NOx"
+    },
+    "PM25": {
+      "fullName": "Fine Particulate Matter (< 2.5 µm)",
+      "primarySources": ["diesel_engines", "coal_plants", "wildfires"],
+      "cascadeTargets": ["aerosol_cooling_effect", "health_burden", "photosynthesis_reduction"],
+      "healthNote": "7 million deaths/year (WHO 2023)"
+    },
+    "BC": {
+      "fullName": "Black Carbon (Soot)",
+      "gwp_100yr": "3200 (short-lived)",
+      "primarySources": ["diesel", "biomass_burning", "coal"],
+      "cascadeTargets": ["arctic_ice_albedo_loss", "glacier_darkening", "atmospheric_co2_rise"]
+    },
+    "HFCs": {
+      "fullName": "Hydrofluorocarbons",
+      "gwp_100yr_range": "148-12000",
+      "primarySources": ["air_conditioning", "refrigeration"],
+      "cascadeTargets": ["ozone_stratospheric_depletion", "atmospheric_co2_rise"]
+    },
+    "SO2": {
+      "fullName": "Sulfur Dioxide",
+      "primarySources": ["coal_plants", "shipping"],
+      "cascadeTargets": ["acid_deposition", "aerosol_cooling_effect"]
+    }
+  },
+
+  "cascadeNodes": [
+
+    {
+      "id": "source",
+      "label": "Human Activity",
+      "description": "Daily activities that generate greenhouse gases and pollutants directly or through supply chains.",
+      "layer": 0,
+      "category": "source",
+      "icon": "👤",
+      "activationRules": {
+        "alwaysActive": true
+      },
+      "severityFormula": "totalKgCO2",
+      "severityThresholds": { "low": 0, "medium": 500, "high": 2000, "critical": 5000 },
+      "metricTemplate": "${totalKgCO2} kg CO₂e",
+      "color": "#1de9b6"
+    },
+
+    {
+      "id": "fossil_fuel_combustion",
+      "label": "Fossil Fuel Combustion",
+      "description": "Burning petrol, diesel, jet fuel, and coal releases CO₂, NOₓ, PM2.5, and black carbon directly into the atmosphere. The incomplete combustion in urban traffic produces 4–8x more NOₓ per km than highway driving.",
+      "layer": 1,
+      "category": "direct_emission",
+      "icon": "🔥",
+      "activationRules": {
+        "requiredActivities": ["personal_vehicle", "aviation", "electricity", "natural_gas"],
+        "minActivitySum": 0,
+        "logic": "OR"
+      },
+      "pollutantsEmitted": ["CO2", "NOx", "PM25", "BC", "SO2"],
+      "severityFormula": "transportKgCO2 + electricityKgCO2 + gasKgCO2",
+      "severityThresholds": { "low": 0, "medium": 300, "high": 1500, "critical": 4000 },
+      "metricTemplate": "${value} kg CO₂",
+      "parentIds": ["source"],
+      "source": "IPCC AR6 WG III Ch.10"
+    },
+
+    {
+      "id": "methane_livestock",
+      "label": "Enteric Methane Emission",
+      "description": "Livestock — especially cattle — produce methane via enteric fermentation in their digestive systems. Methane is 84× more potent than CO₂ over 20 years. Global livestock accounts for 14.5% of all greenhouse gas emissions (FAO GLEAM).",
+      "layer": 1,
+      "category": "direct_emission",
+      "icon": "🐄",
+      "activationRules": {
+        "requiredActivities": ["beef", "dairy"],
+        "minActivitySum": 0.1,
+        "logic": "OR"
+      },
+      "pollutantsEmitted": ["CH4", "N2O"],
+      "severityFormula": "beefKgCO2e * 0.67",
+      "severityThresholds": { "low": 0, "medium": 100, "high": 500, "critical": 1500 },
+      "metricTemplate": "${value} kg CH₄ CO₂e",
+      "parentIds": ["source"],
+      "source": "FAO GLEAM 2.0"
+    },
+
+    {
+      "id": "deforestation_pressure",
+      "label": "Deforestation Pressure",
+      "description": "Beef and dairy demand is the single largest driver of tropical deforestation. Each kilogram of beef requires 164 m² of land per year. In the Amazon, conversion of 1 hectare of rainforest releases 150–200 tonnes of stored CO₂.",
+      "layer": 1,
+      "category": "direct_emission",
+      "icon": "🌳",
+      "activationRules": {
+        "requiredActivities": ["beef", "shopping"],
+        "activityMinValues": { "beef": 0.2 },
+        "logic": "OR"
+      },
+      "pollutantsEmitted": ["CO2", "BC"],
+      "severityFormula": "beefKg * 6",
+      "severityThresholds": { "low": 0, "medium": 50, "high": 200, "critical": 600 },
+      "metricTemplate": "${value} m² forest pressure",
+      "parentIds": ["source"],
+      "source": "Science 2020 - Pendrill et al."
+    },
+
+    {
+      "id": "contrail_formation",
+      "label": "Contrail & High-Altitude NOₓ",
+      "description": "Jet contrails form ice crystals that trap outgoing heat — contributing roughly the same warming as the CO₂ itself. NOₓ at 10–12 km altitude forms ozone 4–6× more efficiently than ground-level emissions, thinning the stratospheric ozone layer.",
+      "layer": 1,
+      "category": "direct_emission",
+      "icon": "✈️",
+      "activationRules": {
+        "requiredActivities": ["aviation"],
+        "activityMinValues": { "aviation": 50 },
+        "logic": "AND"
+      },
+      "pollutantsEmitted": ["NOx", "BC", "H2O"],
+      "severityFormula": "aviationKm * 0.121",
+      "severityThresholds": { "low": 50, "medium": 500, "high": 2000, "critical": 5000 },
+      "metricTemplate": "${value} kg CO₂e contrail effect",
+      "parentIds": ["source"],
+      "source": "IPCC AR5 Aviation Chapter; Lee et al. 2021 Atmospheric Environment"
+    },
+
+    {
+      "id": "agricultural_n2o",
+      "label": "Agricultural N₂O Release",
+      "description": "Synthetic fertilizers and manure decompose to release nitrous oxide (N₂O), which has 265× the warming power of CO₂ over 100 years and also destroys stratospheric ozone. Agriculture contributes 60% of all anthropogenic N₂O.",
+      "layer": 1,
+      "category": "direct_emission",
+      "icon": "🌾",
+      "activationRules": {
+        "requiredActivities": ["beef", "dairy"],
+        "activityMinValues": { "beef": 0.5 },
+        "logic": "OR"
+      },
+      "pollutantsEmitted": ["N2O"],
+      "severityFormula": "foodKgCO2e * 0.11",
+      "severityThresholds": { "low": 0, "medium": 50, "high": 200, "critical": 800 },
+      "metricTemplate": "${value} kg N₂O CO₂e",
+      "parentIds": ["source"],
+      "source": "IPCC AR6 WG III Ch.7; FAO 2023"
+    },
+
+    {
+      "id": "waste_emissions",
+      "label": "Waste & Packaging Emissions",
+      "description": "Consumer goods generate packaging waste that decomposes in landfills, releasing methane. E-waste from electronics leaches heavy metals and requires energy-intensive recycling. Only 9% of plastic ever produced has been recycled.",
+      "layer": 1,
+      "category": "direct_emission",
+      "icon": "🗑️",
+      "activationRules": {
+        "requiredActivities": ["shopping"],
+        "activityMinValues": { "shopping": 20 },
+        "logic": "AND"
+      },
+      "pollutantsEmitted": ["CH4", "CO2"],
+      "severityFormula": "shoppingUSD * 0.08",
+      "severityThresholds": { "low": 0, "medium": 30, "high": 150, "critical": 500 },
+      "metricTemplate": "${value} kg CO₂e waste",
+      "parentIds": ["source"],
+      "source": "UNEP 2021; EPA MSW Report 2022"
+    },
+
+    {
+      "id": "atmospheric_co2_rise",
+      "label": "Atmospheric CO₂ Accumulation",
+      "description": "CO₂ released today will remain in the atmosphere for 300–1,000 years. Current atmospheric concentration is 421 ppm — 50% above pre-industrial levels. Each ppm rise corresponds to ~8 billion tonnes of CO₂. The last time concentrations were this high was 3 million years ago when seas were 20–25m higher.",
+      "layer": 2,
+      "category": "atmospheric_effect",
+      "icon": "🌫️",
+      "activationRules": {
+        "requiredParents": ["fossil_fuel_combustion", "methane_livestock"],
+        "minParentSeverity": "low",
+        "logic": "OR"
+      },
+      "severityFormula": "totalKgCO2",
+      "severityThresholds": { "low": 0, "medium": 200, "high": 1000, "critical": 3000 },
+      "metricTemplate": "+${ppm} ppm atmospheric",
+      "parentIds": ["fossil_fuel_combustion", "methane_livestock", "waste_emissions"],
+      "currentGlobalStatus": "421 ppm (May 2024, Mauna Loa) — highest in 3 million years",
+      "source": "NOAA GML; IPCC AR6"
+    },
+
+    {
+      "id": "ozone_stratospheric_depletion",
+      "label": "Stratospheric Ozone Stress",
+      "description": "Aviation NOₓ, agricultural N₂O, and HFCs chemically destroy ozone (O₃) molecules in the stratosphere (15–35 km altitude). A 1% decrease in ozone allows 2% more UV-B to reach Earth's surface. UV-B disrupts DNA in organisms, reduces phytoplankton productivity, and disorients birds that navigate using UV-sensitive vision.",
+      "layer": 2,
+      "category": "atmospheric_effect",
+      "icon": "☀️",
+      "activationRules": {
+        "requiredParents": ["contrail_formation", "agricultural_n2o"],
+        "minParentSeverity": "low",
+        "logic": "OR",
+        "boostIfAviation": true
+      },
+      "severityFormula": "aviationKm * 0.00003 + beefKg * 0.002",
+      "severityThresholds": { "low": 100, "medium": 1000, "high": 5000, "critical": 15000 },
+      "metricTemplate": "NOₓ flux: ${value} g",
+      "parentIds": ["contrail_formation", "agricultural_n2o", "fossil_fuel_combustion"],
+      "source": "WMO Ozone Assessment 2022; Lee et al. 2021"
+    },
+
+    {
+      "id": "ozone_tropospheric_smog",
+      "label": "Tropospheric Ozone & Smog",
+      "description": "At ground level, ozone (O₃) is a pollutant formed when NOₓ reacts with sunlight and volatile organic compounds (VOCs). Tropospheric ozone damages plant tissues, reducing crop yields by 7–12% globally. It also harms lung tissue and is linked to 1.1 million premature deaths annually.",
+      "layer": 2,
+      "category": "atmospheric_effect",
+      "icon": "🌁",
+      "activationRules": {
+        "requiredParents": ["fossil_fuel_combustion"],
+        "requiredActivities": ["personal_vehicle", "electricity"],
+        "logic": "OR",
+        "minParentSeverity": "low"
+      },
+      "severityFormula": "transportKgCO2 * 1.9",
+      "severityThresholds": { "low": 0, "medium": 400, "high": 2000, "critical": 6000 },
+      "metricTemplate": "${value} g NOₓ ground-level",
+      "parentIds": ["fossil_fuel_combustion"],
+      "source": "EEA 2023; WHO Air Quality Report 2022"
+    },
+
+    {
+      "id": "acid_deposition",
+      "label": "Acid Rain & Soil Acidification",
+      "description": "NOₓ and SO₂ combine with atmospheric moisture to form nitric and sulfuric acids. Acid rain leaches calcium, magnesium, and potassium from forest soils, killing trees and acidifying lakes. Freshwater pH drop below 5.0 eliminates most fish and aquatic insects.",
+      "layer": 2,
+      "category": "atmospheric_effect",
+      "icon": "🌧️",
+      "activationRules": {
+        "requiredParents": ["fossil_fuel_combustion"],
+        "requiredActivities": ["electricity", "personal_vehicle"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "electricityKgCO2 * 0.7",
+      "severityThresholds": { "low": 200, "medium": 800, "high": 2500, "critical": 7000 },
+      "metricTemplate": "pH impact: ${value} index",
+      "parentIds": ["fossil_fuel_combustion"],
+      "source": "UNEP 2021; EPA Acid Rain Report"
+    },
+
+    {
+      "id": "ocean_co2_absorption",
+      "label": "Ocean CO₂ Uptake",
+      "description": "Oceans absorb approximately 25–30% of human CO₂ emissions, acting as a carbon sink. However, dissolved CO₂ reacts with seawater to form carbonic acid, dropping ocean pH. Since 1850, ocean pH has fallen from 8.2 to 8.1 — a 26% increase in acidity. At current rates, pH will fall to 7.95 by 2100.",
+      "layer": 2,
+      "category": "atmospheric_effect",
+      "icon": "🌊",
+      "activationRules": {
+        "requiredParents": ["atmospheric_co2_rise"],
+        "logic": "AND",
+        "minParentSeverity": "low"
+      },
+      "severityFormula": "totalKgCO2 * 0.27",
+      "severityThresholds": { "low": 0, "medium": 100, "high": 500, "critical": 2000 },
+      "metricTemplate": "pH −${value} units absorbed",
+      "parentIds": ["atmospheric_co2_rise"],
+      "source": "IPCC SROCC 2019; NOAA Ocean Acidification Program"
+    },
+
+    {
+      "id": "black_carbon_albedo",
+      "label": "Black Carbon Arctic Deposition",
+      "description": "Soot (black carbon) from diesel engines and coal plants travels thousands of kilometres before settling on Arctic and glacier ice. Black surfaces absorb more solar energy than white ice, accelerating melt — the ice-albedo feedback. Himalayan glaciers darkened by BC are retreating 2× faster than climate models alone predict.",
+      "layer": 2,
+      "category": "atmospheric_effect",
+      "icon": "⬛",
+      "activationRules": {
+        "requiredParents": ["fossil_fuel_combustion", "deforestation_pressure"],
+        "requiredActivities": ["personal_vehicle", "electricity"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "transportKgCO2 * 0.009",
+      "severityThresholds": { "low": 500, "medium": 2000, "high": 5000, "critical": 12000 },
+      "metricTemplate": "${value} g BC deposited",
+      "parentIds": ["fossil_fuel_combustion", "deforestation_pressure"],
+      "source": "IPCC AR6 WG I Ch.6; Flanner et al. Nature Geoscience"
+    },
+
+    {
+      "id": "global_temperature_rise",
+      "label": "Global Temperature Rise",
+      "description": "Every 1,000 gigatonnes of cumulative CO₂ raises global average temperature by approximately 0.45°C. We have already committed to at least 1.5°C above pre-industrial, and current trajectories point to 2.4–3.5°C by 2100. 1.5°C destroys 70–90% of coral reefs; 2°C destroys >99%.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "🌡️",
+      "activationRules": {
+        "requiredParents": ["atmospheric_co2_rise", "ocean_co2_absorption"],
+        "logic": "OR",
+        "minParentSeverity": "low"
+      },
+      "severityFormula": "totalKgCO2 * 0.00000045",
+      "severityThresholds": { "low": 0, "medium": 500, "high": 2000, "critical": 5000 },
+      "metricTemplate": "+${value}°C committed warming",
+      "parentIds": ["atmospheric_co2_rise", "ocean_co2_absorption", "black_carbon_albedo"],
+      "source": "IPCC AR6 WG I SPM; Matthews et al. 2021"
+    },
+
+    {
+      "id": "ocean_warming_acidification",
+      "label": "Ocean Warming & Acidification",
+      "description": "The ocean has absorbed 90% of the excess heat from global warming. Surface temperatures have risen 0.9°C since 1880. Warmer, more acidic water stresses calcifying organisms: corals, oysters, pteropods, and echinoderms all show reduced shell/skeleton formation. Ocean deoxygenation has expanded 'dead zones' by 50% since 1960.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "🌡️",
+      "activationRules": {
+        "requiredParents": ["ocean_co2_absorption", "global_temperature_rise"],
+        "logic": "OR",
+        "minParentSeverity": "low"
+      },
+      "severityFormula": "totalKgCO2 * 0.27",
+      "severityThresholds": { "low": 0, "medium": 300, "high": 1500, "critical": 4000 },
+      "metricTemplate": "pH −0.1 / +0.9°C SST",
+      "parentIds": ["ocean_co2_absorption", "global_temperature_rise"],
+      "source": "IPCC SROCC 2019 Ch.3; NOAA NCEI"
+    },
+
+    {
+      "id": "arctic_ice_loss",
+      "label": "Arctic Sea Ice & Glacier Loss",
+      "description": "Arctic sea ice is disappearing at 13% per decade. The Arctic is warming 3–4× faster than the global average (Arctic Amplification). When ice melts, darker ocean water is exposed, absorbing more heat — creating a self-reinforcing feedback loop. Greenland ice melt alone contributes 0.8 mm/year to sea level rise.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "🧊",
+      "activationRules": {
+        "requiredParents": ["global_temperature_rise", "black_carbon_albedo"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.00013",
+      "severityThresholds": { "low": 500, "medium": 1500, "high": 4000, "critical": 8000 },
+      "metricTemplate": "−${value}% ice extent",
+      "parentIds": ["global_temperature_rise", "black_carbon_albedo"],
+      "source": "NSIDC 2023; IPCC AR6 WG I Ch.9"
+    },
+
+    {
+      "id": "uv_radiation_increase",
+      "label": "UV-B Radiation Surge",
+      "description": "Ozone depletion allows more UV-B radiation (280–315 nm) to penetrate to Earth's surface. UV-B disrupts DNA repair mechanisms in marine phytoplankton, reduces photosynthesis rates, and — critically — affects the UV-vision navigation system used by many migratory bird species. A 1% ozone loss → 2% UV-B increase.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "🔆",
+      "activationRules": {
+        "requiredParents": ["ozone_stratospheric_depletion"],
+        "logic": "AND",
+        "minParentSeverity": "low"
+      },
+      "severityFormula": "aviationKm * 0.00003 + beefKg * 0.001",
+      "severityThresholds": { "low": 100, "medium": 500, "high": 2000, "critical": 6000 },
+      "metricTemplate": "+${value}% UV-B flux",
+      "parentIds": ["ozone_stratospheric_depletion"],
+      "source": "WMO Ozone Assessment 2022; Noxon 1979; UNEP Environmental Effects Panel"
+    },
+
+    {
+      "id": "sea_level_rise",
+      "label": "Sea Level Rise",
+      "description": "Sea levels are rising at 3.7 mm/year — twice the rate of the 1990s. By 2100, under high-emissions scenarios, seas could rise 0.6–1.0 m, flooding 1 billion people's homes. Low-lying island nations, coastal wetlands, and shorebird nesting beaches are the most immediately threatened.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "🌊",
+      "activationRules": {
+        "requiredParents": ["arctic_ice_loss", "ocean_warming_acidification"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.0000037",
+      "severityThresholds": { "low": 1000, "medium": 3000, "high": 6000, "critical": 10000 },
+      "metricTemplate": "+${value} mm/century",
+      "parentIds": ["arctic_ice_loss", "ocean_warming_acidification"],
+      "source": "IPCC SROCC 2019; Church & White 2011 Surveys in Geophysics"
+    },
+
+    {
+      "id": "extreme_weather",
+      "label": "Extreme Weather Intensification",
+      "description": "Every 1°C of warming increases the atmosphere's water-holding capacity by 7%, fuelling more intense rainfall, storms, and floods. Heatwave frequency has tripled since 1950. Tropical storm wind speeds are increasing, and the proportion of Category 4–5 hurricanes has risen 25% per decade since 1980.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "⛈️",
+      "activationRules": {
+        "requiredParents": ["global_temperature_rise", "ocean_warming_acidification"],
+        "logic": "AND",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.0004",
+      "severityThresholds": { "low": 1000, "medium": 2500, "high": 6000, "critical": 12000 },
+      "metricTemplate": "${value}× event probability",
+      "parentIds": ["global_temperature_rise", "ocean_warming_acidification"],
+      "source": "IPCC AR6 WG I Ch.11; Fischer & Knutti 2015 Nature Climate Change"
+    },
+
+    {
+      "id": "permafrost_thaw",
+      "label": "Permafrost Methane Feedback",
+      "description": "Arctic permafrost stores an estimated 1.5 trillion tonnes of carbon — twice the current atmospheric carbon stock. As temperatures rise above −2°C, permafrost thaws and microbes decompose organic matter, releasing CO₂ and methane. This creates a powerful positive feedback loop that could add 0.1–0.2°C of warming beyond human emissions by 2100.",
+      "layer": 3,
+      "category": "physical_effect",
+      "icon": "🌿",
+      "activationRules": {
+        "requiredParents": ["arctic_ice_loss", "global_temperature_rise"],
+        "logic": "AND",
+        "minParentSeverity": "high"
+      },
+      "severityFormula": "totalKgCO2 * 0.0002",
+      "severityThresholds": { "low": 2000, "medium": 5000, "high": 10000, "critical": 20000 },
+      "metricTemplate": "${value} Gt C at risk",
+      "parentIds": ["arctic_ice_loss", "global_temperature_rise"],
+      "source": "Schuur et al. 2015 Nature; IPCC AR6 WG I Ch.5"
+    },
+
+    {
+      "id": "coral_bleaching",
+      "label": "Coral Bleaching & Reef Collapse",
+      "description": "Coral bleaching occurs when ocean temperatures exceed the coral's tolerance by just 1°C for several weeks. The coral expels its symbiotic algae (zooxanthellae), turning white. Without the algae it cannot feed. Mass bleaching events now occur 5× more frequently than in the 1980s. 50% of the world's coral reefs have already died.",
+      "layer": 4,
+      "category": "ecosystem_impact",
+      "icon": "🪸",
+      "activationRules": {
+        "requiredParents": ["ocean_warming_acidification"],
+        "logic": "AND",
+        "minParentSeverity": "low",
+        "boostIfAcidification": true
+      },
+      "severityFormula": "totalKgCO2 * 0.25",
+      "severityThresholds": { "low": 0, "medium": 200, "high": 800, "critical": 2500 },
+      "metricTemplate": "${value}% reef at risk",
+      "parentIds": ["ocean_warming_acidification", "ocean_co2_absorption"],
+      "affectedSpecies": [
+        "Acropora cervicornis (Staghorn Coral)",
+        "Acropora palmata (Elkhorn Coral)",
+        "Orbicella faveolata (Boulder Coral)",
+        "Amphiprion percula (Clownfish)",
+        "Chelonia mydas (Green Sea Turtle)",
+        "Epinephelus striatus (Nassau Grouper)",
+        "Hippocampus guttulatus (Spiny Seahorse)"
+      ],
+      "currentGlobalStatus": "50% of coral reefs lost since 1950. Great Barrier Reef suffered 5 mass bleachings since 2016.",
+      "source": "Hughes et al. 2018 Science; IPCC SROCC 2019"
+    },
+
+    {
+      "id": "amazon_dieback",
+      "label": "Amazon Tipping Point",
+      "description": "The Amazon rainforest — holding 150–200 Gt of carbon — is approaching a tipping point. It generates 50–80% of its own rainfall through transpiration. When 20–25% of the forest is cleared, rainfall decreases enough to trigger irreversible savannification. Current deforestation stands at ~18%. Beyond the tipping point, the forest could release its stored carbon within decades.",
+      "layer": 4,
+      "category": "ecosystem_impact",
+      "icon": "🌿",
+      "activationRules": {
+        "requiredParents": ["deforestation_pressure", "global_temperature_rise"],
+        "logic": "AND",
+        "activityMinValues": { "beef": 1.0 },
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "beefKg * 164",
+      "severityThresholds": { "low": 50, "medium": 500, "high": 2000, "critical": 8000 },
+      "metricTemplate": "${value} m² forest lost",
+      "parentIds": ["deforestation_pressure", "global_temperature_rise"],
+      "affectedSpecies": [
+        "Panthera onca (Jaguar)",
+        "Ara ararauna (Blue-and-gold Macaw)",
+        "Amazona amazonica (Orange-winged Amazon Parrot)",
+        "Harpia harpyja (Harpy Eagle)",
+        "Tapirus terrestris (South American Tapir)",
+        "Pongo pygmaeus (Bornean Orangutan)",
+        "Uakari monkey (Cacajao calvus)"
+      ],
+      "currentGlobalStatus": "18% of Amazon deforested. Scientists warn tipping point at 20-25%.",
+      "source": "Lovejoy & Nobre 2019 Science Advances; Gatti et al. 2021 Nature"
+    },
+
+    {
+      "id": "marine_food_web",
+      "label": "Marine Food Web Collapse",
+      "description": "Coral reef death removes habitat for 25% of all marine species despite covering less than 0.1% of the ocean floor. Simultaneously, ocean acidification dissolves the shells of pteropods (sea snails), copepods, and krill — the base of the marine food chain. Phytoplankton productivity is down 40% since 1950 due to warming and acidification.",
+      "layer": 4,
+      "category": "ecosystem_impact",
+      "icon": "🐠",
+      "activationRules": {
+        "requiredParents": ["coral_bleaching", "ocean_warming_acidification"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.2",
+      "severityThresholds": { "low": 300, "medium": 1000, "high": 3000, "critical": 7000 },
+      "metricTemplate": "${value}% productivity loss",
+      "parentIds": ["coral_bleaching", "ocean_warming_acidification"],
+      "affectedSpecies": [
+        "Limacina helicina (Arctic Sea Butterfly / Pteropod)",
+        "Euphausia superba (Antarctic Krill)",
+        "Thalassiosira weissflogii (Marine Phytoplankton)",
+        "Paracirrhites arcatus (Ringtail Wrasse)",
+        "Balaenoptera musculus (Blue Whale)",
+        "Spheniscus magellanicus (Magellanic Penguin)"
+      ],
+      "source": "IPCC SROCC 2019; Bopp et al. 2013 Biogeosciences"
+    },
+
+    {
+      "id": "wildfire_increase",
+      "label": "Wildfire Amplification",
+      "description": "Warming and drought stress create ideal conditions for wildfires. Global burned area has increased 25% since 1979. Australian Black Summer (2019–20) burned 18.6 million hectares. California wildfires have grown 8× more destructive since the 1970s. Wildfires release stored carbon, accelerating warming — another feedback loop.",
+      "layer": 4,
+      "category": "ecosystem_impact",
+      "icon": "🔥",
+      "activationRules": {
+        "requiredParents": ["global_temperature_rise", "deforestation_pressure"],
+        "logic": "OR",
+        "minParentSeverity": "high"
+      },
+      "severityFormula": "totalKgCO2 * 0.0003",
+      "severityThresholds": { "low": 2000, "medium": 5000, "high": 10000, "critical": 20000 },
+      "metricTemplate": "${value}× fire risk multiplier",
+      "parentIds": ["global_temperature_rise", "deforestation_pressure", "extreme_weather"],
+      "affectedSpecies": [
+        "Phascolarctos cinereus (Koala)",
+        "Dasyurus maculatus (Tiger Quoll)",
+        "Xanthopus purpureiceps (Purple-crowned Lorikeet)",
+        "Glossy Black-Cockatoo (Calyptorhynchus lathami)"
+      ],
+      "source": "Jolly et al. 2015 Nature Climate Change; IPCC AR6 WG II"
+    },
+
+    {
+      "id": "freshwater_stress",
+      "label": "Freshwater Scarcity",
+      "description": "Glaciers supply fresh water to 2 billion people. As they retreat, seasonal water flows become erratic — flood years followed by drought years. Agriculture uses 70% of global freshwater. Beef production requires 15,400 litres per kg — the same as a 20-minute shower every day for 4 years.",
+      "layer": 4,
+      "category": "ecosystem_impact",
+      "icon": "💧",
+      "activationRules": {
+        "requiredParents": ["arctic_ice_loss", "global_temperature_rise"],
+        "requiredActivities": ["beef"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "beefKg * 15400 + totalKgCO2 * 0.1",
+      "severityThresholds": { "low": 0, "medium": 10000, "high": 50000, "critical": 150000 },
+      "metricTemplate": "${value} L freshwater stress",
+      "parentIds": ["arctic_ice_loss", "global_temperature_rise", "deforestation_pressure"],
+      "affectedSpecies": [
+        "Alosa sapidissima (American Shad)",
+        "Oncorhynchus tshawytscha (Chinook Salmon)",
+        "Platanista gangetica (Ganges River Dolphin)",
+        "Pseudemys concinna (River Cooter Turtle)"
+      ],
+      "source": "IPCC AR6 WG II Ch.4; Mekonnen & Hoekstra 2012 Hydrol. Earth Syst. Sci."
+    },
+
+    {
+      "id": "migratory_bird_disruption",
+      "label": "Migratory Bird Navigation Loss",
+      "description": "Many migratory birds use UV-sensitive vision and magnetic field cues to navigate. Ozone depletion and geomagnetic disturbances from solar UV exposure confuse these systems. Climate shifts are causing 2–4 week mismatches between bird arrival dates and peak insect food availability — called phenological mismatch. 3 billion birds have vanished from North America since 1970.",
+      "layer": 5,
+      "category": "biodiversity_loss",
+      "icon": "🐦",
+      "activationRules": {
+        "requiredParents": ["uv_radiation_increase", "extreme_weather", "global_temperature_rise"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.006",
+      "severityThresholds": { "low": 100, "medium": 500, "high": 2000, "critical": 5000 },
+      "metricTemplate": "2–6 week timing shift",
+      "parentIds": ["uv_radiation_increase", "extreme_weather", "global_temperature_rise"],
+      "affectedSpecies": [
+        "Sterna paradisaea (Arctic Tern) — longest migration: 70,000 km/year",
+        "Limosa lapponica (Bar-tailed Godwit) — 11,000 km non-stop",
+        "Dendroica cerulea (Cerulean Warbler) — 65% population decline",
+        "Charadrius melodus (Piping Plover) — threatened coastal nester",
+        "Numenius borealis (Eskimo Curlew) — likely extinct",
+        "Motacilla flava (Yellow Wagtail)",
+        "Acrocephalus arundinaceus (Great Reed Warbler)"
+      ],
+      "currentGlobalStatus": "3 billion birds lost in North America since 1970. 1 in 8 bird species globally threatened.",
+      "source": "Rosenberg et al. 2019 Science; BirdLife International 2022"
+    },
+
+    {
+      "id": "coral_reef_biodiversity",
+      "label": "Reef Biodiversity Collapse",
+      "description": "Coral reefs host 25% of all marine species. Their collapse creates a cascade of extinction through the food web. Reef fish provide protein for over 500 million people. The economic value of reef services — fisheries, tourism, coastal protection — exceeds $375 billion/year globally.",
+      "layer": 5,
+      "category": "biodiversity_loss",
+      "icon": "🐠",
+      "activationRules": {
+        "requiredParents": ["coral_bleaching", "marine_food_web"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.15",
+      "severityThresholds": { "low": 200, "medium": 600, "high": 2000, "critical": 5000 },
+      "metricTemplate": "${value}% reef species at risk",
+      "parentIds": ["coral_bleaching", "marine_food_web"],
+      "affectedSpecies": [
+        "Chelonia mydas (Green Sea Turtle)",
+        "Eretmochelys imbricata (Hawksbill Turtle) — critically endangered",
+        "Carcharhinus perezi (Caribbean Reef Shark)",
+        "Hippocampus hippocampus (Short-snouted Seahorse)",
+        "Scarus guacamaia (Rainbow Parrotfish)",
+        "Manta birostris (Oceanic Manta Ray)"
+      ],
+      "currentGlobalStatus": "If warming hits 2°C: >99% of coral reefs destroyed.",
+      "source": "IPCC SR1.5 2018; WWF Living Ocean Report 2022"
+    },
+
+    {
+      "id": "forest_bird_habitat_loss",
+      "label": "Forest Bird Habitat Collapse",
+      "description": "Deforestation removes nesting habitat, food sources, and breeding grounds for thousands of forest-dependent bird species. Canopy loss reduces arthropod (insect) prey by 50–80% in cleared areas. Many neotropical migrants that winter in South America are already experiencing 50–80% population declines as wintering grounds are cleared.",
+      "layer": 5,
+      "category": "biodiversity_loss",
+      "icon": "🦅",
+      "activationRules": {
+        "requiredParents": ["amazon_dieback", "deforestation_pressure"],
+        "logic": "OR",
+        "minParentSeverity": "medium",
+        "boostIfBeef": true
+      },
+      "severityFormula": "beefKg * 8 + shoppingUSD * 0.1",
+      "severityThresholds": { "low": 10, "medium": 100, "high": 500, "critical": 2000 },
+      "metricTemplate": "${value} m² habitat lost",
+      "parentIds": ["amazon_dieback", "deforestation_pressure", "wildfire_increase"],
+      "affectedSpecies": [
+        "Harpia harpyja (Harpy Eagle) — needs 100 km² territory",
+        "Dendroica cerulea (Cerulean Warbler) — 65% decline",
+        "Campephilus principalis (Ivory-billed Woodpecker) — likely extinct",
+        "Spizaetus isidori (Black-and-chestnut Eagle)",
+        "Cotinga cotinga (Banded Cotinga)",
+        "Tinamus major (Great Tinamou)",
+        "Platyrinchus mystaceus (White-throated Spadebill)"
+      ],
+      "currentGlobalStatus": "3 billion birds lost North America since 1970. Tropical forest birds: 57% species declining.",
+      "source": "BirdLife International 2022; IPBES 2019; Rosenberg et al. 2019 Science"
+    },
+
+    {
+      "id": "polar_species_decline",
+      "label": "Polar Species Collapse",
+      "description": "Arctic and Antarctic species evolved for stable cold environments. Sea ice loss removes hunting and breeding platforms for polar bears, walruses, and seals. Penguin colonies are shrinking as krill populations decline. The Arctic is losing 13% of sea ice per decade — habitat that took millions of years to form.",
+      "layer": 5,
+      "category": "biodiversity_loss",
+      "icon": "🐻",
+      "activationRules": {
+        "requiredParents": ["arctic_ice_loss", "marine_food_web"],
+        "logic": "OR",
+        "minParentSeverity": "high"
+      },
+      "severityFormula": "totalKgCO2 * 0.00013",
+      "severityThresholds": { "low": 1500, "medium": 4000, "high": 8000, "critical": 15000 },
+      "metricTemplate": "−${value}% polar ice extent",
+      "parentIds": ["arctic_ice_loss", "marine_food_web", "permafrost_thaw"],
+      "affectedSpecies": [
+        "Ursus maritimus (Polar Bear) — vulnerable",
+        "Odobenus rosmarus (Walrus) — vulnerable",
+        "Pagophilus groenlandicus (Harp Seal)",
+        "Aptenodytes forsteri (Emperor Penguin) — near threatened",
+        "Pygoscelis adeliae (Adélie Penguin) — colonies declining 65%",
+        "Leptonychotes weddellii (Weddell Seal)",
+        "Megaptera novaeangliae (Humpback Whale)"
+      ],
+      "currentGlobalStatus": "Polar bear population fell 40% in 20 years. Emperor penguin predicted extinct by 2100 at current rates.",
+      "source": "IUCN Red List 2023; Jenouvrier et al. 2021 Nat. Climate Change"
+    },
+
+    {
+      "id": "pollinator_collapse",
+      "label": "Pollinator & Insect Collapse",
+      "description": "75% of food crops depend on pollinators. Insect populations have declined 27% over the past 30 years, with some studies reporting 76% declines in flying insect biomass in protected areas. Causes include climate-induced habitat shifts, pesticide use, and ozone damage to plant attractants (volatiles that guide bees).",
+      "layer": 5,
+      "category": "biodiversity_loss",
+      "icon": "🐝",
+      "activationRules": {
+        "requiredParents": ["ozone_tropospheric_smog", "global_temperature_rise", "acid_deposition"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "transportKgCO2 * 0.003 + electricityKgCO2 * 0.002",
+      "severityThresholds": { "low": 500, "medium": 1500, "high": 4000, "critical": 9000 },
+      "metricTemplate": "−${value}% insect biomass",
+      "parentIds": ["ozone_tropospheric_smog", "acid_deposition", "global_temperature_rise"],
+      "affectedSpecies": [
+        "Apis mellifera (Western Honey Bee) — 30% colony loss/year in US",
+        "Bombus terrestris (Buff-tailed Bumblebee) — range shrinking northward",
+        "Danaus plexippus (Monarch Butterfly) — 90% population decline",
+        "Vanessa atalanta (Red Admiral Butterfly)",
+        "Osmia bicornis (Red Mason Bee)",
+        "Xylocopa violacea (Violet Carpenter Bee)"
+      ],
+      "currentGlobalStatus": "76% decline in flying insect biomass 1989–2017 (Hallmann et al. 2017 PLOS One).",
+      "source": "Hallmann et al. 2017; Wagner 2020 PNAS; IPBES Pollinators Report 2016"
+    },
+
+    {
+      "id": "coastal_habitat_loss",
+      "label": "Coastal Ecosystem & Nesting Loss",
+      "description": "Rising seas flood low-lying coastal habitats: salt marshes, mangroves, and sand beaches that provide nesting grounds for threatened shorebirds and sea turtles. A 30 cm sea level rise would inundate nesting habitat for millions of Piping Plovers, least terns, and loggerhead sea turtles.",
+      "layer": 5,
+      "category": "biodiversity_loss",
+      "icon": "🏖️",
+      "activationRules": {
+        "requiredParents": ["sea_level_rise", "extreme_weather"],
+        "logic": "OR",
+        "minParentSeverity": "medium"
+      },
+      "severityFormula": "totalKgCO2 * 0.0000037",
+      "severityThresholds": { "low": 2000, "medium": 5000, "high": 10000, "critical": 20000 },
+      "metricTemplate": "${value} mm/century sea rise",
+      "parentIds": ["sea_level_rise", "extreme_weather"],
+      "affectedSpecies": [
+        "Charadrius melodus (Piping Plover) — endangered",
+        "Sternula antillarum (Least Tern) — threatened",
+        "Caretta caretta (Loggerhead Sea Turtle) — vulnerable",
+        "Dermochelys coriacea (Leatherback Sea Turtle) — vulnerable",
+        "Haematopus ostralegus (Eurasian Oystercatcher)",
+        "Limosa limosa (Black-tailed Godwit) — near threatened"
+      ],
+      "currentGlobalStatus": "50% of world's mangroves lost since 1950. Shorebird populations down 70% globally.",
+      "source": "BirdLife International 2022; IUCN Red List; IPCC SROCC 2019"
+    }
+  ],
+
+  "chainRules": [
+    {
+      "id": "rule_transport_combustion",
+      "description": "Any transportation or energy use triggers fossil fuel combustion",
+      "condition": { "activityCategories": ["transportation", "energy"], "minKgCO2": 0 },
+      "activates": "fossil_fuel_combustion"
+    },
+    {
+      "id": "rule_aviation_contrail",
+      "description": "Aviation uniquely triggers contrail/stratospheric NOx effects",
+      "condition": { "requiredActivity": "aviation", "minValue": 50 },
+      "activates": "contrail_formation"
+    },
+    {
+      "id": "rule_beef_methane",
+      "description": "Beef and dairy trigger enteric methane chain",
+      "condition": { "requiredActivities": ["beef", "dairy"], "minValue": 0.1, "logic": "OR" },
+      "activates": "methane_livestock"
+    },
+    {
+      "id": "rule_beef_deforestation",
+      "description": "Beef demand directly pressures tropical forest conversion",
+      "condition": { "requiredActivity": "beef", "minValue": 0.5 },
+      "activates": "deforestation_pressure"
+    },
+    {
+      "id": "rule_high_beef_amazon",
+      "description": "Significant beef consumption tips Amazon tipping point risk",
+      "condition": { "requiredActivity": "beef", "minValue": 1.0 },
+      "activates": "amazon_dieback"
+    },
+    {
+      "id": "rule_emissions_co2_rise",
+      "description": "Any significant emission triggers atmospheric CO2 accumulation",
+      "condition": { "minTotalKgCO2": 10 },
+      "activates": "atmospheric_co2_rise"
+    },
+    {
+      "id": "rule_co2_ocean",
+      "description": "Atmospheric CO2 leads to ocean absorption and acidification",
+      "condition": { "requiredParent": "atmospheric_co2_rise" },
+      "activates": "ocean_co2_absorption"
+    },
+    {
+      "id": "rule_temperature_cascade",
+      "description": "CO2 accumulation drives global temperature rise",
+      "condition": { "minTotalKgCO2": 50 },
+      "activates": "global_temperature_rise"
+    },
+    {
+      "id": "rule_ocean_warming",
+      "description": "Temperature rise and CO2 absorption warm and acidify oceans",
+      "condition": { "requiredParents": ["global_temperature_rise", "ocean_co2_absorption"], "logic": "OR" },
+      "activates": "ocean_warming_acidification"
+    },
+    {
+      "id": "rule_medium_arctic",
+      "description": "Medium+ emissions trigger Arctic ice loss",
+      "condition": { "minTotalKgCO2": 500 },
+      "activates": "arctic_ice_loss"
+    },
+    {
+      "id": "rule_ozone_uv",
+      "description": "Ozone depletion causes UV surge",
+      "condition": { "requiredParent": "ozone_stratospheric_depletion" },
+      "activates": "uv_radiation_increase"
+    },
+    {
+      "id": "rule_high_sea_level",
+      "description": "High emissions trigger sea level rise warning",
+      "condition": { "minTotalKgCO2": 1000 },
+      "activates": "sea_level_rise"
+    },
+    {
+      "id": "rule_high_extreme_weather",
+      "description": "High emissions trigger extreme weather intensification",
+      "condition": { "minTotalKgCO2": 1500 },
+      "activates": "extreme_weather"
+    },
+    {
+      "id": "rule_critical_permafrost",
+      "description": "Critical emissions trigger permafrost methane feedback",
+      "condition": { "minTotalKgCO2": 3000 },
+      "activates": "permafrost_thaw"
+    },
+    {
+      "id": "rule_coral_bleach",
+      "description": "Ocean warming triggers coral bleaching",
+      "condition": { "requiredParent": "ocean_warming_acidification" },
+      "activates": "coral_bleaching"
+    },
+    {
+      "id": "rule_marine_web",
+      "description": "Coral bleaching collapses marine food web",
+      "condition": { "requiredParent": "coral_bleaching", "minParentSeverity": "medium" },
+      "activates": "marine_food_web"
+    },
+    {
+      "id": "rule_forest_bird",
+      "description": "Deforestation pressure causes forest bird habitat loss",
+      "condition": { "requiredParent": "deforestation_pressure" },
+      "activates": "forest_bird_habitat_loss"
+    },
+    {
+      "id": "rule_wildfire",
+      "description": "High temperature and deforestation pressure triggers wildfire",
+      "condition": { "minTotalKgCO2": 2000, "requiredActivities": ["beef", "electricity"], "logic": "OR" },
+      "activates": "wildfire_increase"
+    },
+    {
+      "id": "rule_freshwater",
+      "description": "Beef consumption and ice loss cause freshwater stress",
+      "condition": { "requiredActivities": ["beef"], "minValue": 0.5 },
+      "activates": "freshwater_stress"
+    },
+    {
+      "id": "rule_migratory_bird",
+      "description": "UV increase + warming disrupts migratory birds",
+      "condition": { "requiredParents": ["uv_radiation_increase", "global_temperature_rise"], "logic": "OR" },
+      "activates": "migratory_bird_disruption"
+    },
+    {
+      "id": "rule_reef_biodiversity",
+      "description": "Coral bleaching + marine food web collapse drives reef extinction",
+      "condition": { "requiredParent": "coral_bleaching", "minParentSeverity": "medium" },
+      "activates": "coral_reef_biodiversity"
+    },
+    {
+      "id": "rule_polar_species",
+      "description": "Arctic ice loss drives polar species decline",
+      "condition": { "requiredParent": "arctic_ice_loss", "minParentSeverity": "high" },
+      "activates": "polar_species_decline"
+    },
+    {
+      "id": "rule_pollinator",
+      "description": "Smog and temperature rise collapse pollinators",
+      "condition": { "requiredParents": ["ozone_tropospheric_smog", "global_temperature_rise"], "logic": "OR", "minTotalKgCO2": 500 },
+      "activates": "pollinator_collapse"
+    },
+    {
+      "id": "rule_coastal_habitat",
+      "description": "Sea level rise and extreme weather destroy coastal nesting habitats",
+      "condition": { "requiredParent": "sea_level_rise", "minParentSeverity": "medium" },
+      "activates": "coastal_habitat_loss"
+    }
+  ],
+
+  "severityThresholds": {
+    "global": {
+      "negligible": { "maxKgCO2": 50, "label": "Negligible", "color": "#4caf50" },
+      "low":        { "maxKgCO2": 500, "label": "Low", "color": "#1de9b6" },
+      "moderate":   { "maxKgCO2": 2000, "label": "Moderate", "color": "#d4a847" },
+      "high":       { "maxKgCO2": 5000, "label": "High", "color": "#ff9800" },
+      "critical":   { "maxKgCO2": 999999, "label": "Critical", "color": "#ff5252" }
+    },
+    "layerDepthByImpact": {
+      "negligible": 2,
+      "low": 3,
+      "moderate": 4,
+      "high": 5,
+      "critical": 5
+    },
+    "maxNodesPerLayer": {
+      "negligible": [1, 2, 2, 0, 0],
+      "low":        [1, 2, 3, 2, 0],
+      "moderate":   [1, 3, 4, 3, 2],
+      "high":       [1, 4, 5, 4, 3],
+      "critical":   [1, 5, 6, 5, 5]
+    }
+  },
+
+  "equivalences": [
+    { "id": "trees", "label": "trees needed to offset (1 year)", "formula": "totalKgCO2 / 21", "icon": "🌳" },
+    { "id": "cab_km", "label": "km in a petrol cab", "formula": "totalKgCO2 / 0.21", "icon": "🚕" },
+    { "id": "beef_burgers", "label": "beef burgers worth of emissions", "formula": "totalKgCO2 / 3.5", "icon": "🍔" },
+    { "id": "phone_charges", "label": "smartphone charges", "formula": "totalKgCO2 / 0.008", "icon": "📱" },
+    { "id": "plastic_bags", "label": "plastic bags produced", "formula": "totalKgCO2 * 2.4", "icon": "♻️" },
+    { "id": "shower_minutes", "label": "minutes of hot shower", "formula": "totalKgCO2 / 0.1", "icon": "🚿" },
+    { "id": "coal_grams", "label": "grams of coal burned equivalent", "formula": "totalKgCO2 / 0.00082 * 1000", "icon": "⚫" }
+  ],
+
+  "globalStatusFacts": {
+    "co2_current_ppm": 421,
+    "co2_preindustrial_ppm": 280,
+    "warming_since_1850_degC": 1.2,
+    "sea_level_rise_since_1900_cm": 20,
+    "arctic_sea_ice_loss_percent_per_decade": 13,
+    "coral_reefs_lost_percent": 50,
+    "birds_lost_north_america_billion": 3,
+    "insect_biomass_decline_percent": 76,
+    "vertebrate_population_decline_percent": 69,
+    "ocean_ph_1850": 8.21,
+    "ocean_ph_current": 8.09,
+    "mangroves_lost_percent": 50,
+    "wetlands_lost_percent_since_1900": 35,
+    "species_threatened_climate_iucn": 10967,
+    "annual_deforestation_hectares_million": 10
+  }
+}
